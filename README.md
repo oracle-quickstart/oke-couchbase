@@ -5,6 +5,12 @@
 This is a walkthrough of setting the [Couchbase Operator](https://blog.couchbase.com/introducing-couchbase-operator/) up on [Oracle Kubernetes Engine (OKE)](https://cloud.oracle.com/containers/kubernetes-engine).
 
 ## Deploy an OKE Cluster
+There's a good writeup on deploying an OKE cluster [here](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/index.html).
+
+
+
+
+
 
 AKS is currently in public preview.  There are a bunch of [nice tutorials](https://docs.microsoft.com/en-us/azure/aks/) on how to use it.
 
