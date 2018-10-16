@@ -2,95 +2,57 @@
 
 # oke-couchbase
 
-This is a walkthrough of setting the [Couchbase Operator](https://blog.couchbase.com/introducing-couchbase-operator/) up on [Oracle Kubernetes Engine (OKE)](https://cloud.oracle.com/containers/kubernetes-engine).
+This is a walkthrough of setting the [Couchbase Operator](https://developer.couchbase.com/documentation/server/current/operator/overview.html) up on [Oracle Kubernetes Engine (OKE)](https://cloud.oracle.com/containers/kubernetes-engine).
 
-## Deploy an OKE Cluster
-There's a good writeup on deploying an OKE cluster [here](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-full/index.html).
-
-
-
-
-
-
-AKS is currently in public preview.  There are a bunch of [nice tutorials](https://docs.microsoft.com/en-us/azure/aks/) on how to use it.
-
-For this walkthrough we're going to use the Azure 2.0 CLI.  If you haven't already, you'll need to [install that and login](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli).  Even if you have the CLI installed already, you might want to update it.  An alternative would be to do all this in a [cloud shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview), though you'll eventually need to get kubectl working locally in order to set up a tunnel to open a web browser to your Couchbase cluster.
-
-To make sure the Azure 2.0 CLI is working properly try running:
-
-    az group list
-
-With that all set, we can register the AKS provider.  Presumably once the service goes GA this won't be necessary.
-
-    az provider register -n Microsoft.ContainerService
-
-If that runs well, you should see:
-
-![provider](/images/provider.png)
-
-Now you're ready to create a resource group and a cluster inside that:
-
-    az group create --name myResourceGroup --location eastus
-    az aks create --resource-group myResourceGroup --name myAKSCluster
-
-Note that it's way easier to do this from the CLI because the CLI creates the service principal you need automatically.  If you do this in the portal you'll need to create the service principal manually.
-
-![deploying](/images/deployed.png)
-
-When that's done, or even while it's running, you can login to the [Azure Portal](https://portal.azure.com) and take a look at your new cluster there as well:
-
-![portal](/images/portal.png)
-
-## Configure kubectl
-
-Now that we have a cluster, the next step is to install and set up kubectl up so it can connect to the cluster.
-
-    az aks install-cli
-    az aks get-credentials --resource-group=myResourceGroup --name=myAKSCluster
-
-You should see something like this:
-
-![getcreds](/images/getcreds.png)
-
-You might need to set your KUBECONFIG too:
-
-    export KUBECONFIG=~/.kube/config
-
-With all that set up we can make sure our kubectl is working by running:
-
-    kubectl get nodes
-
-That should show three nodes:
-
-![getnodes](/images/getnodes.png)
+## Prerequisites
+First you're going to need to setup an Oracle Cloud account, your environmental variables, an OKE cluster and your kubectl.  It sounds like a lot, but there's a nice walkthrough [here](https://github.com/cloud-partners/oke-how-to) that should help.
 
 ## Deploying the Operator
+Great, you made it!
 
-Once you have an AKS cluster deployed and a running kubectl, you're ready to deploy the Operator.  The documentation on that is [here](http://docs.couchbase.com/prerelease/couchbase-operator/beta/overview.html).
+Once you have an OKE cluster deployed and a running kubectl, you're ready to deploy the Operator.  The documentation on that is [here](https://docs.couchbase.com/operator/1.0/install-kubernetes.html).
+
+First, you need to down stuff for some reason that is unclear to me.
+
+    curl -O https://s3.amazonaws.com/packages.couchbase.com/kubernetes/1.0.0/couchbase-autonomous-operator-kubernetes_1.0.0-macos_x86_64.zip
+    unzip couchbase-autonomous-operator-kubernetes_1.0.0-macos_x86_64.zip
+    cd couchbase-autonomous-operator-kubernetes_1.0.0-macos_x86_64
+    ls
+
+That gives this:
+
+![](images/01%20-%20download.png)
 
 To create the deployment and check it deployed, run this:
 
-    kubectl create -f https://s3.amazonaws.com/packages.couchbase.com/kubernetes/beta/operator.yaml
+    kubectl create -f cluster-role.yaml
+    kubectl create serviceaccount couchbase-operator --namespace default
+    kubectl create clusterrolebinding couchbase-operator --clusterrole couchbase-operator --serviceaccount default:couchbase-operator
+    kubectl create -f operator.yaml
     kubectl get deployments
 
 You should see something like this:
 
-![operatordeployed](/images/operatordeployed.png)
+![](images/02%20-%20operator%20deployed.png)
 
 ## Deploying a Couchbase Cluster
 
 We're there!  Time to get a live cluster.  Run this:
 
-    kubectl create -f https://s3.amazonaws.com/packages.couchbase.com/kubernetes/beta/secret.yaml
-    kubectl create -f https://s3.amazonaws.com/packages.couchbase.com/kubernetes/beta/couchbase-cluster.yaml
+    kubectl create -f secret.yaml
+    cbopctl create -f couchbase-cluster.yaml
 
 That should give this:
 
-![couchbasecreated](/images/couchbasecreated.png)
+![](images/03%20-%20cluster%20created.png)
 
 You can view the Couchbase and operator pods by running:
 
     kubectl get pods
+
+This gives:
+
+![](images/04%20-%20get%20pods.png)
 
 ## Accessing the Couchbase Web UI
 
@@ -100,12 +62,18 @@ You've now got a cluster.  But to use it you probably want to set up port forwar
 
 Leave that command running:
 
-![portforward](/images/portforward.png)
+![](images/05%20-%20portforward.png)
 
 Now open up a browser to http://localhost:8091
 
-![loginscreen](/images/loginscreen.png)
+![](images/06%20-%20loginscreen.png)
 
 The username is `Administrator` and password is `password`.  And now you're in!
 
-![webui](/images/webui.png)
+![](images/07%20-%20console.png)
+
+## Deleting the Operator
+If you want to delete the Operator, you can run this:
+
+    kubectl delete deployment couchbase-operator
+    kubectl delete crd couchbaseclusters.couchbase.com
