@@ -29,18 +29,21 @@ To create the deployment and check it deployed, run this:
     kubectl create serviceaccount couchbase-operator --namespace default
     kubectl create clusterrolebinding couchbase-operator --clusterrole couchbase-operator --serviceaccount default:couchbase-operator
     kubectl create -f operator.yaml
+
+When you've done all that, you can check the Operator deployed with:
+
     kubectl get deployments
 
 You should see something like this:
 
-![](images/02%20-%20operator%20deployed.png)
+![](images/02%20-%20get%20deployments.png)
 
 ## Deploying a Couchbase Cluster
 
 We're there!  Time to get a live cluster.  Run this:
 
     kubectl create -f secret.yaml
-    cbopctl create -f couchbase-cluster.yaml
+    ./bin/cbopctl create -f couchbase-cluster.yaml
 
 That should give this:
 
