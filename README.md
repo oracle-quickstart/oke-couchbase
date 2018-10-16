@@ -12,7 +12,7 @@ Great, you made it!
 
 Once you have an OKE cluster deployed and a running kubectl, you're ready to deploy the Operator.  The documentation on that is [here](https://docs.couchbase.com/operator/1.0/install-kubernetes.html).
 
-First, you need to down stuff for some reason that is unclear to me.
+First, you need to download stuff.  This includes a customer kubectl as Couchbase has forked it and created their own.  There are per platform binaries for those.  This downloads the Mac one:
 
     curl -O https://s3.amazonaws.com/packages.couchbase.com/kubernetes/1.0.0/couchbase-autonomous-operator-kubernetes_1.0.0-macos_x86_64.zip
     unzip couchbase-autonomous-operator-kubernetes_1.0.0-macos_x86_64.zip
