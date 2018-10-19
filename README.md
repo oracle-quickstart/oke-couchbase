@@ -43,7 +43,7 @@ You should see something like this:
 We're there!  Time to get a live cluster.  Run this:
 
     kubectl create -f secret.yaml
-    ./bin/cbopctl create -f couchbase-cluster.yaml
+    kubectl create -f couchbase-cluster.yaml
 
 That should give this:
 
@@ -65,11 +65,11 @@ You've now got a cluster.  But to use it you probably want to set up port forwar
 
 Leave that command running:
 
-![](images/05%20-%20portforward.png)
+![](images/05%20-%20port%20forward.png)
 
 Now open up a browser to http://localhost:8091
 
-![](images/06%20-%20loginscreen.png)
+![](images/06%20-%20login%20screen.png)
 
 The username is `Administrator` and password is `password`.  And now you're in!
 
@@ -80,3 +80,7 @@ If you want to delete the Operator, you can run this:
 
     kubectl delete deployment couchbase-operator
     kubectl delete crd couchbaseclusters.couchbase.com
+
+That gives this:
+
+![](images/08%20-%20delete.png)
