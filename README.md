@@ -1,5 +1,3 @@
-# This doesn't work yet!!!
-
 # oke-couchbase
 
 This is a walkthrough of setting the [Couchbase Operator](https://developer.couchbase.com/documentation/server/current/operator/overview.html) up on [Oracle Kubernetes Engine (OKE)](https://cloud.oracle.com/containers/kubernetes-engine).
