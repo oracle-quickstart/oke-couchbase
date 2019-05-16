@@ -1,9 +1,8 @@
-# oke-couchbase
-
-This is a walkthrough of setting the [Couchbase Operator](https://developer.couchbase.com/documentation/server/current/operator/overview.html) up on [Oracle Kubernetes Engine (OKE)](https://cloud.oracle.com/containers/kubernetes-engine).
+# oke-quickstart-couchbase
+This is a walkthrough of setting the [Couchbase Operator](https://developer.couchbase.com/documentation/server/current/operator/overview.html) up on [Oracle Kubernetes Engine (OKE)](https://cloud.oracle.com/containers/kubernetes-engine).  It is developed jointly by Oracle and Couchbase.
 
 ## Prerequisites
-First you're going to need to setup an Oracle Cloud account, your environmental variables, an OKE cluster and your kubectl.  It sounds like a lot, but there's a nice walkthrough [here](https://github.com/cloud-partners/oke-how-to) that should help.
+First you're going to need to setup an Oracle Cloud account, your environmental variables, an OKE cluster and your kubectl.  It sounds like a lot, but there's a nice walkthrough [here](https://github.com/oracle/oke-quickstart-prerequisites) that should help.
 
 ## Deploying the Operator
 Great, you made it!
