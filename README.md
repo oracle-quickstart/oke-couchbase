@@ -1,4 +1,4 @@
-# oke-quickstart-couchbase
+# oke-couchbase
 This is a walkthrough of setting the [Couchbase Operator](https://developer.couchbase.com/documentation/server/current/operator/overview.html) up on [Oracle Cloud Infrastructure Container Engine for Kubernetes (OKE)](https://cloud.oracle.com/containers/kubernetes-engine). It is developed jointly by Oracle and Couchbase.
 
 ## Prerequisites
